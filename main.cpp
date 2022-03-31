@@ -11,7 +11,7 @@ void sigintHandler(int sig)
 
 int main(int argc, char* argv[])
 {
-     std::signal(SIGINT, sigintHandler);
+    std::signal(SIGINT, sigintHandler);
 #if UDP_SEND
     int rc;
     int udp_socket;

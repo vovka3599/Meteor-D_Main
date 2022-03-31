@@ -26,6 +26,9 @@ set(SOURCES
 
     device.h
     device.cpp
+
+    udp_receiver.h
+    udp_receiver.cpp
     )
 
 add_executable(Meteor-D_Main ${SOURCES})

@@ -9,7 +9,7 @@ int LMK::lml_read(uint8_t command, bool print)
 {
     int ret = i2c_smbus_read_byte_data(dev_lmk, command);
     if (print)
-        printf("R %d = 0x%.2x\n", command, ret);
+        printf("R[%x] = 0x%.2x\n", command, ret);
     return ret;
 }
 

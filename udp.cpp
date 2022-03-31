@@ -3,11 +3,11 @@
 int create_udp_socket(int *s)
 {
     char saddr[128];
-    strcpy(saddr, ADDRESS_DEFAULT);
+    strcpy(saddr, ADDR_UDP_SEND);
 
     struct addr_params arg;
     arg.saddr = &saddr[0];
-    arg.port = PORT_DEFAULT;
+    arg.port = PORT_UDP_SEND;
     arg.fft_size = FFT_SIZE_DEFAULT;
 
     struct sockaddr_in sin;

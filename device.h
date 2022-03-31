@@ -15,6 +15,7 @@
 #include "dma_proxy.h"
 #include "config.h"
 #include "udp.h"
+#include "udp_receiver.h"
 #include "register.h"
 
 struct Queue_data

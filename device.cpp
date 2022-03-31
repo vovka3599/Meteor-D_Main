@@ -153,8 +153,13 @@ void Device::DMA_Transmit()
     int tmp;
     Queue_data QI;
     uint32_t lost_sample_check = 0;
+#if DAC_UDP_SEND_ON
+    udp_receiver *u_r = new udp_receiver(ADDR_UDP_REC, PORT_UDP_REC, TRANSACTION_SIZE*sizeof(l_complex<uint16_t>));
+#endif
+
     while(run_dma_tx)
     {
+#if !DAC_UDP_SEND_ON
         if (queue_tx.size() > 0)
         {
             pthread_mutex_lock(&lock);
@@ -166,14 +171,20 @@ void Device::DMA_Transmit()
             ioctl(dma_tx_fd, PROXY_DMA_TRANSFER, &tmp);
         }
         else
-            usleep(4);
-
+            usleep(2);
+#else
+        memcpy(dma_tx_interface->buffer, u_r->get_data(), TRANSACTION_SIZE*sizeof(l_complex<int16_t>));
+        ioctl(dma_tx_fd, PROXY_DMA_TRANSFER, &tmp);
+#endif
         if (lost_sample_check != control_struct->lost_sample)
         {
             printf("lost_sample %d\n", control_struct->lost_sample);
             lost_sample_check = control_struct->lost_sample;
         }
     }
+#if DAC_UDP_SEND_ON
+    delete u_r;
+#endif
     printf("Stop DMA_TX\n");
 }
 
@@ -196,6 +207,20 @@ void Device::DMA_Receive()
                 printf("DMA read error. Exit\n");
                 exit(0);
             }
+
+//            int temp = open("/sys/bus/iio/devices/iio:device0/in_temp0_raw", O_RDONLY);
+//            if (tail_buf % 32 == 0)
+//            {
+//                char temp_read[4];
+//                read(temp, &temp_read, 4);
+//                lseek(temp, 0, SEEK_SET);
+
+//                int temp_pr = std::atoi(temp_read);
+//                float rez_temp = ((temp_pr-2219)*123.0407)/1000.0;
+//                printf("temperature  = %.2f\n", rez_temp);
+//            }
+//            close(temp);
+
 #if TIME_ON
             Time_start();
 #endif
@@ -205,7 +230,7 @@ void Device::DMA_Receive()
             for(int j = 0; j < PART_BUF_NUM; j++)
             {
                 memcpy(rec_buf, dma_rx_interface->buffer_data+tail_buf*ALL_BUF_SIZE+j*TRANSACTION_SIZE*NUM_CH*IQ_WEIGHT, TRANSACTION_SIZE*sizeof(l_complex<int16_t>));
-#if DAC_SEND
+#if DAC_SEND && !DAC_UDP_SEND_ON
                 pthread_mutex_lock(&lock);
                 Queue_data q_tx;
                 q_tx.rec_data.insert(q_tx.rec_data.end(), rec_buf, rec_buf + TRANSACTION_SIZE);
@@ -220,7 +245,7 @@ void Device::DMA_Receive()
                 }
 
                 ssize_t ret = send(udp_socket, udp_buf, TRANSACTION_SIZE*sizeof(l_complex<float>), 0);
-                if(ret != FFT_SIZE_DEFAULT)
+                if(ret != TRANSACTION_SIZE*sizeof(l_complex<float>))
                 {
                     printf("Error send data to UDP. Expected %d, send %d\n", TRANSACTION_SIZE*sizeof(l_complex<float>), (int)ret);
                     if(ret < 0)
