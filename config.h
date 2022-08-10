@@ -42,8 +42,8 @@ const uint32_t DAC_DDS_VALUE            = (DAC_DDS_OUT_FREQ_MHz / DAC_DDS_SYSTEM
 const bool DAC_REAL_DATA                = 1;
 
 // DDS ADC DEBUG config
-const uint32_t ADC_DEBUG_ON             = 1;
-const double ADC_DDS_DEBUG_OUT_FREQ_MHz = 59.001;
+const uint32_t ADC_DEBUG_ON             = 0;
+const double ADC_DDS_DEBUG_OUT_FREQ_MHz = 59.002;
 const uint32_t ADC_DDS_DEBUG_VALUE      = (ADC_DDS_DEBUG_OUT_FREQ_MHz/ADC_DDS_SYSTEM_CLOCK_MHz)*(1<<27);
 
 #endif // CONFIG_H

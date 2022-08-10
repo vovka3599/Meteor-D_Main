@@ -102,7 +102,7 @@ int main(int argc, char* argv[])
             pthread_mutex_unlock(&lock);
 #endif
 #if COUNTER_TEST_EN
-            if ((tail_buf[0].x - count) != BUFFER_SIZE)
+            if (!((uint16_t)(count + BUFFER_SIZE) == tail_buf[0].x ))
                 printf("Error count test : %u %u\n", tail_buf[0].x, count);
             count = tail_buf[0].x;
 #endif
