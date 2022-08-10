@@ -79,6 +79,7 @@ int main(int argc, char* argv[])
 #if FILE_SAVE_10MHz
     std::ofstream file_10MHz("rec_10MHz.cs16", std::ios::app | std::ios::binary);
     const int size = 8192*2;
+    int start = 0;
     d_buffer_t *temp = new d_buffer_t[BUFFER_SIZE*size];
     int c = 0;
 #endif
@@ -107,10 +108,15 @@ int main(int argc, char* argv[])
             count = tail_buf[0].x;
 #endif
 #if FILE_SAVE_10MHz
-            memcpy(&temp[c*BUFFER_SIZE], tail_buf, BUFFER_SIZE*sizeof(d_buffer_t));
-            c++;
-            if (c == size)
-                continue;
+            if (start == 20)
+            {
+                memcpy(&temp[c*BUFFER_SIZE], tail_buf, BUFFER_SIZE*sizeof(d_buffer_t));
+                c++;
+                if (c == size)
+                    break;
+            }
+            else
+                start++;
 #endif
 #if UDP_SEND
             udp.send_data(tail_buf, BUFFER_SIZE);
@@ -118,6 +124,7 @@ int main(int argc, char* argv[])
 #endif
         }
     }
+    dev.Stop_DMA_RX();
 
 #if FILE_SAVE_10MHz
     for(int i = 0; i < size; i++)
@@ -125,9 +132,10 @@ int main(int argc, char* argv[])
         file_10MHz.write((char*)(&temp[i*BUFFER_SIZE]), BUFFER_SIZE*sizeof(d_buffer_t));
     }
     file_10MHz.close();
+    delete []  temp;
+    printf("Write done\n");
 #endif
 
-    dev.Stop_DMA_RX();
 #if DAC_SEND
     dev.Stop_DMA_TX();
 #endif

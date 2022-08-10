@@ -16,19 +16,19 @@
 
 // Control config
 #define FILE_SAVE           0
-#define UDP_SEND            1
+#define UDP_SEND            0
 #define TIME_ON             0
 #define DAC_SEND            0
 #define DAC_UDP_SEND_ON     0
 #define COUNTER_TEST_EN     0   // You need to change the buffer type to "unsigned short" in dma_proxy.h
-#define FILE_SAVE_10MHz     0   // Disable all other operations for this mode
+#define FILE_SAVE_10MHz     1   // Disable all other operations for this mode
 
 // DMA config
 #define DEVICE_RX           "/dev/dma_ltc_rx"
 #define DEVICE_TX           "/dev/dma_max_tx"
 
 // Decimation config
-const uint8_t SAMPLE_FREQ               = SAMP_FREQ_10_MHz;
+const uint8_t SAMPLE_FREQ               = SAMP_FREQ_1_MHz;
 
 // DDS ADC config
 const double ADC_DDS_OUT_FREQ_MHz       = 21.000;
