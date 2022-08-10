@@ -16,7 +16,13 @@ struct l_complex{
  * @return              complex number
  */
 template<typename T>
-l_complex<T> ComplexScale(l_complex<T> a, double s);
+l_complex<T> ComplexScale(l_complex<T> a, double s)
+{
+    l_complex<T> c;
+    c.x = s * a.x;
+    c.y = s * a.y;
+    return c;
+}
 
 /**
  * @brief ComplexMul    Complex multiplication
@@ -25,7 +31,13 @@ l_complex<T> ComplexScale(l_complex<T> a, double s);
  * @return              complex number
  */
 template<typename T>
-l_complex<T> ComplexMul(l_complex<T> a, l_complex<T> b);
+l_complex<T> ComplexMul(l_complex<T> a, l_complex<T> b)
+{
+    l_complex<T> c;
+    c.x = a.x * b.x - a.y * b.y;
+    c.y = a.x * b.y + a.y * b.x;
+    return c;
+}
 
 /**
  * @brief ComplexMulConj    Complex conjugate multiplication
@@ -34,7 +46,12 @@ l_complex<T> ComplexMul(l_complex<T> a, l_complex<T> b);
  * @return                  complex number
  */
 template<typename T>
-l_complex<T> ComplexMulConj(l_complex<T> a, l_complex<T> b);
+l_complex<T> ComplexMulConj(l_complex<T> a, l_complex<T> b) {
+    l_complex<T> c;
+    c.x = a.x * b.x + a.y * b.y;
+    c.y = (-a.x * b.y) + a.y * b.x;
+    return c;
+}
 
 /**
  * @brief ComplexSum    Sum of complex numbers
@@ -43,7 +60,13 @@ l_complex<T> ComplexMulConj(l_complex<T> a, l_complex<T> b);
  * @return              complex number
  */
 template<typename T>
-l_complex<T> ComplexSum(l_complex<T> a, l_complex<T> b);
+l_complex<T> ComplexSum(l_complex<T> a, l_complex<T> b)
+{
+    l_complex<T> c;
+    c.x = a.x + b.x;
+    c.y = a.y + b.y;
+    return c;
+}
 
 /**
  * @brief Expj  Phase to complex number
@@ -51,6 +74,12 @@ l_complex<T> ComplexSum(l_complex<T> a, l_complex<T> b);
  * @return      complex number
  */
 template<typename T>
-l_complex<T> Expj(float phase);
+l_complex<T> Expj(float phase)
+{
+    l_complex<T> c;
+    c.x = cos(phase);
+    c.y = sin(phase);
+    return c;
+}
 
 #endif // L_COMPLEX_H

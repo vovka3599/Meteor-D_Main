@@ -22,7 +22,6 @@ set(SOURCES
     udp.cpp
 
     l_complex.h
-    l_complex.cpp
 
     device.h
     device.cpp
