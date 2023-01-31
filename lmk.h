@@ -30,12 +30,14 @@ namespace LMK3318 {
         void lmk_modify(uint8_t command, uint8_t value, uint8_t mask);
 
     public:
+        ~LMK();
         LMK();
 
         /**
          * @brief lmk_init          LMK initialization
          */
         void lmk_init();
+        void lmk_stop();
     };
 }
 

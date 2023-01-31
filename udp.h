@@ -18,15 +18,16 @@ namespace UDP
         sockaddr_in address;
 
     public:
-        Udp(const std::string &_ip, uint16_t _port);
+        Udp(){}
+        void Init(const std::string &_ip, uint16_t _port);
         ~Udp();
 
         template<typename T>
         void send_data(T *_data, size_t _size_array)
         {
             ssize_t ret = sendto(udp_socket, _data, _size_array  * sizeof(T), 0, (sockaddr*)&address, sizeof(sockaddr));
-            if(ret < 0)
-                printf("Error send UDP\n");
+//            if(ret < 0)
+//                printf("Error send UDP\n");
         }
     };
 }

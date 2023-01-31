@@ -5,10 +5,10 @@
 
 enum
 {
-    SAMP_FREQ_10_MHz    = 0,
-    SAMP_FREQ_1_MHz     = 1,
-    SAMP_FREQ_500_kHz   = 2,
-    SAMP_FREQ_250_kHz   = 3
+    SAMP_RATE_10_MHz    = 0,
+    SAMP_RATE_1_MHz     = 1,
+    SAMP_RATE_500_kHz   = 2,
+    SAMP_RATE_250_kHz   = 3
 };
 
 /**
@@ -19,7 +19,7 @@ struct Registers
     struct Control
     {
         uint32_t reset          : 1;
-        uint32_t samp_freq      : 2;
+        uint32_t samp_rate      : 2;
         uint32_t adc_shdn       : 1;
         uint32_t adc_dith       : 1;
         uint32_t adc_pga        : 1;

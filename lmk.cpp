@@ -1,6 +1,13 @@
 #include "lmk.h"
 
 namespace LMK3318 {
+
+    LMK::~LMK()
+    {
+        printf("Close LMK\n");
+        close(dev_lmk);
+    }
+
     LMK::LMK()
     {
 
@@ -55,8 +62,11 @@ namespace LMK3318 {
 
         lmk_modify(12, 0x00, 0xBF);
         lmk_modify(56, 0x00, 0xFD);
+    }
 
-        close(dev_lmk);
+    void LMK::lmk_stop()
+    {
+        lmk_modify(30, 0xFF, 0xFF);
     }
 
     int LMK::i2c_smbus_access(int file, char read_write, uint8_t command, int size, union i2c_smbus_data *data)

@@ -1,4 +1,7 @@
-#define BUFFER_SIZE 1024                    /* must match driver exactly */
+#ifndef DMA_PROXY_H
+#define DMA_PROXY_H
+
+#define BUFFER_SIZE 2048                    /* must match driver exactly */
 #define BUFFER_COUNT 1						/* driver only */
 
 #define TX_BUFFER_COUNT 	1
@@ -12,7 +15,7 @@
 #define START_XFER 				_IOW('a','e',int32_t*)
 #define XFER 					_IOR('a','f',int32_t*)
 
-#define DT unsigned short
+#define DT signed short
 typedef struct d_buffer{
     DT x;
     DT y;
@@ -29,3 +32,5 @@ struct dma_proxy_channel_interface {
     enum proxy_status { PROXY_NO_ERROR = 0, PROXY_BUSY = 1, PROXY_TIMEOUT = 2, PROXY_ERROR = 3 } status;
     unsigned int length;
 } __attribute__ ((aligned (1024)));		/* 64 byte alignment required for DMA, but 1024 handy for viewing memory */
+
+#endif // DMA_PROXY_H

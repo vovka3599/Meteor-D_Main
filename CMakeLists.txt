@@ -28,7 +28,12 @@ set(SOURCES
 
     udp_receiver.h
     udp_receiver.cpp
+
+    command_arguments.h
+    cxxopts.hpp
     )
+
+add_compile_options(-O3 -mcpu=cortex-a9 -mfpu=neon -mvectorize-with-neon-quad -mfloat-abi=hard -ffast-math -DNDEBUG)
 
 add_executable(Meteor-D_Main ${SOURCES})
 

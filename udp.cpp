@@ -2,7 +2,7 @@
 
 namespace UDP
 {
-    Udp::Udp(const std::string &_ip, uint16_t _port)
+    void Udp::Init(const std::string &_ip, uint16_t _port)
     {
         udp_socket = socket(AF_INET, SOCK_DGRAM, 0);
         if(udp_socket < 0)

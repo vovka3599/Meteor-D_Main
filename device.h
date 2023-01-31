@@ -14,7 +14,7 @@
 #include <signal.h>
 #include <functional>
 
-#include "l_complex.h"
+//#include "l_complex.h"
 #include "dma_proxy.h"
 #include "config.h"
 #include "udp.h"
@@ -26,6 +26,16 @@ namespace METEOR {
     {
     public:
         Device();
+        void Init();
+        void Set_Param(uint16_t _samp_freq,
+                       bool _counter_test_en,
+                       bool _adc_debug_en,
+                       double _adc_freq,
+                       double _adc_debug_freq,
+                       double _adc_sys_clk,
+                       bool _dac_debug_en,
+                       double _dac_freq,
+                       double _dac_sys_clk);
         void Init_DMA_RX(std::string dma_path);
         void Init_DMA_TX(std::string dma_path);
         void Start_DMA_RX();
@@ -37,6 +47,8 @@ namespace METEOR {
         void Time_start();
         int Time_end();
 
+        Registers *control_struct;
+
     private:
         int dma_rx_fd;
         struct dma_proxy_channel_interface *dma_rx_interface;
@@ -44,7 +56,7 @@ namespace METEOR {
         int dma_tx_fd;
         struct dma_proxy_channel_interface *dma_tx_interface;
 
-        Registers *control_struct;
+
 
         uint64_t t_start, t_end;
         std::time_t t_result;
@@ -54,9 +66,6 @@ namespace METEOR {
 
     private:
         void Device_reset();
-        void Init_control_struct();
-        void Set_control_struct();
-
         static void callback(int n, siginfo_t *info, void *unused);
         int Check_valid_buf(uint16_t _ptr_read, uint16_t _prt_dma);
         d_buffer_t *read();

@@ -6,8 +6,45 @@ namespace METEOR {
 
     Device::Device()
     {
-        Init_control_struct();
-        Set_control_struct();
+    }
+
+    void Device::Init()
+    {
+        uint32_t* status_reg;
+        int fd_mem = open("/dev/mem", O_RDWR | O_SYNC);
+        status_reg = (uint32_t*)mmap(NULL, sizeof(Registers), PROT_READ | PROT_WRITE, MAP_SHARED, fd_mem, ADDR_REGISTERS);
+        control_struct = (struct Registers*)status_reg;
+        close(fd_mem);
+    }
+
+    void Device::Set_Param(uint16_t _samp_freq,
+                           bool _counter_test_en,
+                           bool _adc_debug_en,
+                           double _adc_freq,
+                           double _adc_debug_freq,
+                           double _adc_sys_clk,
+                           bool _dac_debug_en,
+                           double _dac_freq,
+                           double _dac_sys_clk)
+    {
+        control_struct->control.reset = 0;
+        control_struct->control.adc_dith = 0;
+        control_struct->control.adc_pga = 0;
+        control_struct->control.adc_rand = 0;
+        control_struct->control.adc_shdn = 0;
+
+        control_struct->control.adc_debug = _adc_debug_en;
+
+        control_struct->control.samp_rate = _samp_freq;
+
+        control_struct->control.dac_real_data = !_dac_debug_en;
+
+        control_struct->dac_dds_freq = (_dac_freq / _dac_sys_clk)*(1<<29);
+
+        control_struct->adc_dds_freq = ((_adc_sys_clk - _adc_freq)/_adc_sys_clk)*(1<<27);
+        control_struct->adc_dds_freq_debug = (_adc_debug_freq/_adc_sys_clk)*(1<<27);
+
+        control_struct->control.counter_test = _counter_test_en;
     }
 
     void Device::Init_DMA_RX(std::string dma_path)
@@ -27,7 +64,6 @@ namespace METEOR {
             exit(EXIT_FAILURE);
         }
         dma_rx_interface->length = BUFFER_SIZE*sizeof(d_buffer_t);
-        //dma_rx_interface->buf_num = 4;
 
         struct sigaction sig;
         sig.sa_sigaction = &Device::callback;
@@ -78,6 +114,7 @@ namespace METEOR {
         ioctl(dma_rx_fd, STOP_CYCLIC);
         munmap(dma_rx_interface, sizeof(struct dma_proxy_channel_interface));
         close(dma_rx_fd);
+        control_struct->control.reset = 0;
     }
 
     void Device::Stop_DMA_TX()
@@ -118,41 +155,12 @@ namespace METEOR {
     void Device::Device_reset()
     {
         control_struct->control.reset = 0;
-        usleep(1000);
+        usleep(100);
+        printf("State Reset = 0. Press any key...");
+        getchar();
         control_struct->control.reset = 1;
-        usleep(1000);
-    }
-
-    void Device::Init_control_struct()
-    {
-        uint32_t* status_reg;
-        int fd_mem = open("/dev/mem", O_RDWR | O_SYNC);
-        status_reg = (uint32_t*)mmap(NULL, sizeof(Registers), PROT_READ | PROT_WRITE, MAP_SHARED, fd_mem, ADDR_REGISTERS);
-        control_struct = (struct Registers*)status_reg;
-        close(fd_mem);
-    }
-
-    void Device::Set_control_struct()
-    {
-        control_struct->control.reset = 1;
-
-        control_struct->control.adc_dith = 0;
-        control_struct->control.adc_pga = 0;
-        control_struct->control.adc_rand = 0;
-        control_struct->control.adc_shdn = 0;
-
-        control_struct->control.adc_debug = ADC_DEBUG_ON;
-
-        control_struct->control.samp_freq = SAMPLE_FREQ;
-
-        control_struct->control.dac_real_data = DAC_REAL_DATA;
-        control_struct->dac_dds_freq = DAC_DDS_VALUE;
-
-        control_struct->adc_dds_freq = ADC_DDS_VALUE;
-
-        control_struct->adc_dds_freq_debug = ADC_DDS_DEBUG_VALUE;
-
-        control_struct->control.counter_test = COUNTER_TEST_EN;
+        usleep(100);
+        printf("State Reset = 1\n");
     }
 
     void Device::callback(int n, siginfo_t *info, void *unused)
