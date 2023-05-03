@@ -27,7 +27,9 @@ struct Registers
         uint32_t adc_debug      : 1;
         uint32_t dac_real_data  : 1;
         uint32_t counter_test   : 1;
-        uint32_t                : 22;
+        uint32_t start_analize  : 1;
+        uint32_t bs_select_data : 1;
+        uint32_t                : 20;
     };
 
     volatile Control control;
@@ -36,6 +38,11 @@ struct Registers
 
     volatile uint32_t adc_dds_freq;
     volatile uint32_t adc_dds_freq_debug;
+
+    volatile uint32_t dma_ptk_len;
+
+    volatile uint32_t reference_energy;
+    volatile float data_compare;
 
     volatile uint32_t lost_sample;
 };

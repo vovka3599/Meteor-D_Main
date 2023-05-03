@@ -39,7 +39,7 @@ int udp_receiver::available_data()
 
     if(bytesReceived != size_data*sizeof(l_complex<short>)){
         if(bytesReceived > 0)
-            printf("got strange %d bytes %d\n", bytesReceived, size_data*sizeof(l_complex<short>));
+            std::cout << "got strange " << bytesReceived << " bytes " <<  size_data*sizeof(l_complex<short>) << std::endl;
     }
     return bytesReceived;
 }

@@ -13,11 +13,11 @@ namespace LMK3318 {
 
     }
 
-    int LMK::lml_read(uint8_t command, bool print)
+    int LMK::lml_read(uint8_t _command, bool print)
     {
-        int ret = i2c_smbus_read_byte_data(dev_lmk, command);
+        int ret = i2c_smbus_read_byte_data(dev_lmk, _command);
         if (print)
-            printf("R[%x] = 0x%.2x\n", command, ret);
+            printf("R[%x] = 0x%.2x\n", _command, ret);
         return ret;
     }
 
@@ -39,7 +39,7 @@ namespace LMK3318 {
         dev_lmk = open(DEV_I2C, O_RDWR);
         if (ioctl(dev_lmk, I2C_SLAVE, DEV_ADRESS) < 0)
         {
-            printf("Error: Could not set address\n");
+            std::cout << "Error: Could not set address\n";
             exit(0);
         }
 
@@ -83,7 +83,7 @@ namespace LMK3318 {
     int LMK::i2c_smbus_read_byte_data(int file, uint8_t command)
     {
         union i2c_smbus_data data;
-        i2c_smbus_access(file, I2C_SMBUS_READ, command, I2C_SMBUS_BYTE_DATA, &data); // I2C_SMBUS_BYTE_DATA
+        i2c_smbus_access(file, I2C_SMBUS_READ, command, I2C_SMBUS_BYTE_DATA, &data);
         return 0x0FF & data.byte;
     }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 5.0.2, 2023-01-31T17:09:26. -->
+<!-- Written by QtCreator 5.0.2, 2023-05-02T16:32:02. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -83,6 +83,9 @@
     <valuelist type="QVariantList" key="ClangTools.SuppressedDiagnostics"/>
     <value type="bool" key="ClangTools.UseGlobalSettings">true</value>
    </valuemap>
+   <valuemap type="QVariantMap" key="CppEditor.QuickFix">
+    <value type="bool" key="UseGlobalSettings">true</value>
+   </valuemap>
   </valuemap>
  </data>
  <data>
@@ -104,7 +107,7 @@
 -DCMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}
 -DCMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}
 -DCMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}</value>
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/svk/Project/Qt/build-Meteor-D_Main-linux-Release</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/svk/Project/Qt/build-Meteor-D_BS_Main-linux-Release</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
@@ -146,9 +149,9 @@
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">RemoteLinux.MakeInstall</value>
-      <value type="QString" key="RemoteLinux.MakeInstall.InstallRoot">/tmp/QtCreator-CuQDLU</value>
+      <value type="QString" key="RemoteLinux.MakeInstall.InstallRoot">/tmp/QtCreator-Ajtztk</value>
       <value type="QString" key="RemoteLinux.MakeInstall.Make">/usr/bin/cmake</value>
-      <value type="QString" key="RemoteLinux.MakeInstall.MakeArguments">--build /home/svk/Project/Qt/build-Meteor-D_Main-linux-Release --target install</value>
+      <value type="QString" key="RemoteLinux.MakeInstall.MakeArguments">--build /home/svk/Project/Qt/build-Meteor-D_BS_Main-linux-Release --target install</value>
       <value type="QString" key="RemoteLinux.MakeInstall.MakeCommand">/usr/bin/cmake</value>
      </valuemap>
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.1">
@@ -177,22 +180,34 @@
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">RemoteLinux.DirectUploadStep</value>
       <valuelist type="QVariantList" key="ProjectExplorer.RunConfiguration.LastDeployedFiles">
-       <value type="QString">/tmp/QtCreator-CuQDLU/home/root/Meteor-D_Main</value>
+       <value type="QString">/tmp/QtCreator-Ajtztk/home/root/Meteor-D_BS_Main</value>
+       <value type="QString">/tmp/QtCreator-Ajtztk/home/root/Meteor-D_BS_Main</value>
+       <value type="QString">/tmp/QtCreator-Ajtztk/home/root/Meteor-D_BS_Main</value>
       </valuelist>
       <valuelist type="QVariantList" key="ProjectExplorer.RunConfiguration.LastDeployedHosts">
+       <value type="QString">192.168.1.170</value>
+       <value type="QString">192.168.1.171</value>
        <value type="QString">192.168.1.172</value>
       </valuelist>
       <valuelist type="QVariantList" key="ProjectExplorer.RunConfiguration.LastDeployedRemotePaths">
        <value type="QString">/home/root</value>
+       <value type="QString">/home/root</value>
+       <value type="QString">/home/root</value>
       </valuelist>
       <valuelist type="QVariantList" key="ProjectExplorer.RunConfiguration.LastDeployedSysroots">
        <value type="QString"></value>
+       <value type="QString"></value>
+       <value type="QString"></value>
       </valuelist>
       <valuelist type="QVariantList" key="RemoteLinux.LastDeployedLocalTimes">
-       <value type="QDateTime">2023-01-31T15:52:16.000</value>
+       <value type="QDateTime">2023-04-21T22:32:57.000</value>
+       <value type="QDateTime">2023-04-25T19:02:16.000</value>
+       <value type="QDateTime">2023-05-02T16:31:04.000</value>
       </valuelist>
       <valuelist type="QVariantList" key="RemoteLinux.LastDeployedRemoteTimes">
-       <value type="QDateTime">2018-03-09T15:50:56.000</value>
+       <value type="QDateTime">2018-03-09T15:48:45.000</value>
+       <value type="QDateTime">2018-03-09T16:10:22.000</value>
+       <value type="QDateTime">2018-03-09T15:47:32.000</value>
       </valuelist>
      </valuemap>
      <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">4</value>
@@ -213,9 +228,9 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">1</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Meteor-D_Main (on %{Device:Name})</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">RemoteLinuxRunConfiguration:Meteor-D_Main</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">Meteor-D_Main</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Meteor-D_BS_Main (on %{Device:Name})</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">RemoteLinuxRunConfiguration:Meteor-D_BS_Main</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">Meteor-D_BS_Main</value>
     <value type="int" key="RemoteLinux.EnvironmentAspect.Version">1</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>

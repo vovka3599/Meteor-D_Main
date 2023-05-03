@@ -14,7 +14,7 @@ struct CommandArgs
         options.add_options("BASE")
                 ("counter_test_en", "Replaces data from ADC with unsigned counter. Only flag")
                 ("file_save_en", "Writing data from the ADC to a file. Only flag")
-                ("s, sample_rate", "Set sample rate:\n0 - SR_10_MHz\n1 - SR_1_MHz\n2 - SR_500_kHz\n3 - SR_250_kHz", cxxopts::value<uint16_t>()->default_value("1"))
+                ("s, sample_rate", "Set sample rate:\n0 - SR_10_MHz\n1 - SR_1_MHz\n2 - SR_500_kHz\n3 - SR_250_kHz", cxxopts::value<uint16_t>()->default_value("0"))
                 ("h, help", "Print help");
         options.add_options("UDP")
                 ("udp_tx_en", "Enable UDP send. Only flag")
@@ -34,11 +34,15 @@ struct CommandArgs
                 ("dac_tx_udp_en", "Changes the DAC data source to UDP. Requires dac_tx_en and udp_rx_en flag. Only flag")
                 ("dac_freq", "RF output frequency in Hz", cxxopts::value<double>()->default_value("59000000"))
                 ("dac_sys_clk", "Clk DAC in Hz. Depends on LMK configuration", cxxopts::value<double>()->default_value("320000000"));
+        options.add_options("COR")
+                ("m, cor_mode_en", "Enable correlator mode. All other modes will be ignored. Only flag")
+                ("t, cor_mode_file_test", "Enable test correlator. The file is required for the test. Only flag")
+                ("th", "Correlation threshold (in float)", cxxopts::value<float>()->default_value("0.5"));
 
         auto result = options.parse(argc, argv);
         if(result.count("h") > 0)
         {
-            std::cout << options.help({"BASE", "UDP", "ADC", "DAC"}) << std::endl;
+            std::cout << options.help({"BASE", "UDP", "ADC", "DAC", "COR"}) << std::endl;
             exit(0);
         }
 
@@ -66,6 +70,12 @@ struct CommandArgs
             }
         }
 
+        if(result.count("t") > 0 && result.count("m") == 0)
+        {
+            std::cout << "Correlator mode not enabled." << std::endl;
+            exit(0);
+        }
+
         base.counter_test_en = result.count("counter_test_en");
         base.file_save_en = result.count("file_save_en");
         base.sample_rate = result["sample_rate"].as<uint16_t>();
@@ -89,8 +99,25 @@ struct CommandArgs
         dac.dac_freq = result["dac_freq"].as<double>();
         dac.dac_sys_clk = result["dac_sys_clk"].as<double>();
 
+        cor.cor_mode_en = result.count("cor_mode_en");
+        cor.cor_mode_file_test = result.count("cor_mode_file_test");
+        cor.th = result["th"].as<float>();
+
+
         if(dac.dac_debug_en)
             dac.dac_tx_en = dac.dac_tx_udp_en = false;
+
+        if(cor.cor_mode_en == true)
+        {
+            base.counter_test_en = false;
+            base.file_save_en = false;
+            udp.udp_tx_en = false;
+            udp.udp_rx_en = false;
+            adc.adc_debug_en = false;
+            dac.dac_debug_en = false;
+            dac.dac_tx_en = false;
+            dac.dac_tx_udp_en = false;
+        }
     }
 
     void PringArgs() const
@@ -143,6 +170,11 @@ struct CommandArgs
         std::cout << "\t dac_tx_udp_en : " << dac.dac_tx_udp_en << std::endl;
         std::cout << "\t dac_freq : " << std::setprecision(15) << dac.dac_freq << std::endl;
         std::cout << "\t dac_sys_clk : " << std::setprecision(15) << dac.dac_sys_clk << std::endl;
+
+        std::cout << "  COR" << std::endl;
+        std::cout << "\t cor_mode_en : " << cor.cor_mode_en << std::endl;
+        std::cout << "\t cor_mode_file_test : " << cor.cor_mode_file_test << std::endl;
+        std::cout << "\t th : " << std::setprecision(6) << cor.th << std::endl;
     }
 
     struct Base
@@ -180,10 +212,18 @@ struct CommandArgs
         double dac_sys_clk;
     };
 
+    struct COR
+    {
+        bool cor_mode_en;
+        bool cor_mode_file_test;
+        float th;
+    };
+
     Base base;
     UDP udp;
     ADC adc;
     DAC dac;
+    COR cor;
 };
 
 #endif // COMMAND_ARGUMENTS_H
